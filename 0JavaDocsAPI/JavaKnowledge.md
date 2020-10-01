@@ -1,6 +1,96 @@
 # Java API Knowledge
 [toc]
 
+## static 和 final 讲解
+
+**可修饰部分**：
+
+1. static：成员变量、方法、代码块（静态代码块）、内部类（静态内部类）
+2. final： 类、成员变量、方法、局部变量
+3. final在一个对象类唯一，static final在多个对象中都唯一；
+
+**static**：
+
+1. static的主要作用是：方便在没有创建对象的情况下来进行调用（方法/变量）。
+2. static 修饰变量
+   1. 无论一个类生成了多少个对象，所有这个对象共用唯一一份静态的成员变量；一个对象对该静态成员变量进行了修改，其他对象的该静态成员变量的值也会随之发生变化。如果一个成员变量是static的，那么我们可以通过类名.成员变量名的方式来使用它(推荐使用这种方式)。
+   2. 没有被static修饰的变量，叫实例变量。对于实例变量，每创建一个实例，就会为实例变量分配一次内存，实例变量可以在内存中有多个拷贝，互不影响（灵活）。
+3. static 修饰方法
+   1. **static方法可以直接通过类名调用，任何的实例也都可以调用，static方法只能访问static的变量和方法**，因此static方法中不能用this和super关键字，不能直接访问所属类的实例变量和实例方法(就是不带static的成员变量和成员成员方法)，只能访问所属类的静态成员变量和成员方法。因为static方法独立于任何实例，因此static方法必须被实现，而不能是抽象的abstract。
+   2. static的数据或方法，属于整个类的而不是属于某个对象的，是不会和类的任何对象实例联系到一起。所以子类和父类之间可以存在同名的static方法名。
+   3. 静态方法只能继承，不能重写(Override)。
+4. static 修饰类
+   1. 一般的类是没有static的，只有内部类可以加上static来表示嵌套类。
+5. static 和 final一起用来修饰成员变量和成员方法，可简单理解为“全局常量”
+   1. 对于变量，表示一旦给值就不可修改，并且通过类名可以访问。
+   2. 对于方法，表示不可覆盖，并且可以通过类名直接访问。
+   3.  对于被static和final修饰过的实例常量，实例本身不能再改变了，但对于一些容器类型（比如，ArrayList、HashMap）的实例变量，不可以改变容器变量本身，但可以修改容器中存放的对象，这一点在编程中用到很多。
+    ```java
+    private static final String strStaticFinalVar = "aaa";  
+    private static String strStaticVar = null;  
+    private final String strFinalVar= null;  
+    private static final int intStaticFinalVar = 0;  
+    private static final Integer integerStaticFinalVar = new Integer(8);  
+    private static final ArrayList<String> alStaticFinalVar = new ArrayList<String>();  
+    
+    //strStaticFinalVar="bbb";//错误，final表示终态,不可以改变变量本身.  
+    strStaticVar = "bbb";     //正确，static表示类变量,值可以改变.  
+    //strFinalVar="呵呵呵呵";      //错误, final表示终态，在定义的时候就要初值（哪怕给个null），一旦给定后就不可再更改。  
+    //intStaticFinalVar=2;         //错误, final表示终态，在定义的时候就要初值（哪怕给个null），一旦给定后就不可再更改。  
+    //integerStaticFinalVar=new Integer(8);        //错误, final表示终态，在定义的时候就要初值（哪怕给个null），一旦给定后就不可再更改。  
+    alStaticFinalVar.add("aaa");   //正确，容器变量本身没有变化，但存放内容发生了变化。这个规则是非常常用的，有很多用途。  
+    alStaticFinalVar.add("bbb");   //正确，容器变量本身没有变化，但存放内容发生了变化。这个规则是非常常用的，有很多用途。  
+    ```
+6. static 静态代码块
+   1. static关键字还有一个比较关键的作用就是 用来形成静态代码块以优化程序性能。static块可以置于类中的任何地方，类中可以有多个static块。在类初次被加载的时候，会按照static块的顺序来执行每个static块，并且只会执行一次。
+   2. 静态块要放在声明的变量下面。
+   3. 如果继承体系既有构造方法，又有静态代码块，那么首先执行最顶层的类的静态代码块，一直执行到最底层类的静态代码块，然后再去执行最顶层类的构造方法，一直执行到最底层的构造方法，注意：**静态代码块只会执行一次**。
+    ```java
+    public class Main {
+        public static void main(String[] args) {
+            new R();
+            new R();
+        }
+    }
+    class P{
+        //static静态代码块
+        static {
+            System.out.println("P static block");
+        }
+        public P(){
+            System.out.println("P constructor");
+        }
+    }
+    class Q extends P{
+        static {
+            System.out.println("Q static block");
+        }
+        public Q(){
+            System.out.println("Q constructor");
+        }
+    }
+    class R extends Q{
+        static {
+            System.out.println("R static block");
+        }
+        public R(){
+            System.out.println("R constructor");
+        }
+    }
+    ```
+   4. 那就是当我们初始化static修饰的成员时，可以将他们统一放在一个以static开始，用花括号包裹起来的块状语句中：
+7. 静态导包：不同于非static导入，采用static导入包后，在不与当前类的方法名冲突的情况下，无需使用“类名.方法名”的方法去调用类方法了，直接可以采用"方法名"去调用类方法，就好像是该类自己的方法一样使用即可。
+
+**final**：
+
+1. final修饰类：final类不能被继承，没有子类，final类中的方法默认是final的。
+2. final修饰方法： 当一个方法被final所修饰的时，表示该方法是一个终态方法，即不能被重写(Override)。但可以被继承。
+3. 类中所有的private方法都被隐含是final的。由于无法取用private方法，则也无法重载之。
+4. final修饰变量：
+   1. 基础类型 用fianl修饰后就变成了一个常量，不可以重新赋值。
+   2. 包装类型 用final修饰后该变量指向的地址不变，但是该地址的的变量完全可以改变。
+5. 对于final类型成员变量
+6. final修饰方法参数
 ## Scanner和BufferedReader的区别和用法
 
 Scanner 和 BufferedReader 同样能实现将键盘输入的数据送入程序
