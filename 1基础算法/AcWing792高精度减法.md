@@ -1,12 +1,12 @@
 # AcWing 算法基础课 -- 基础算法
 
-## AcWing 791. 高精度加法
+## AcWing 792. 高精度减法 
 
 `难度：简单`
 
 ### 题目描述
 
-给定两个正整数，计算它们的和
+给定两个正整数，计算它们的差，计算结果可能为负数。
 
 **输入格式**
 
@@ -14,47 +14,23 @@
 
 **输出格式**
 
-共一行，包含所求的和。
+共一行，包含所求的差。
 
-**数据范围**：
 ```r
+数据范围
+
 1≤整数长度≤100000
+
+输入样例：
+
+32
+11
+
+输出样例：
+
+21
 ```
-**输入样例**：
-
-```r
-12
-23
-```
-
-**输出样例**：
-
-```r
-35
-```
-
 ### Solution
-
-1. 用BitInteger来处理
-
-```java
-import java.math.BigInteger;
-import java.io.*;
-
-public class Main {
-
-    public static void main(String[] args) throws IOException {
-        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-        BigInteger a = new BigInteger(in.readLine());
-        BigInteger b = new BigInteger(in.readLine());
-        System.out.println(a.add(b));
-        
-    }
-
-}
-```
-
-2. 用字符串形式来，会比BigInteger的时间快一倍
 
 ```java
 import java.util.*;
@@ -72,25 +48,37 @@ public class Main{
         for(int i = b.length() - 1; i >= 0; i--) y.add(b.charAt(i) - '0');
         // 用栈来存储，存的话先存个位，打印的话先打印高位
         Deque<Integer> c = new ArrayDeque<>();
-        c = add(x, y);
+        // 如果 x 大于等于 y， 就用 x - y
+        // 如果 x 小于 y，先打印负号，再计算 y - x
+        if(cmp(x, y)) c = sub(x, y);
+        else{
+            System.out.print("-");
+            c = sub(y, x);
+        }
         while(!c.isEmpty()){
             System.out.print(c.pop());
         }
     }
-    // 人为规定 x > y
-    public static Deque<Integer> add(List<Integer> x, List<Integer> y){
-        if(x.size() < y.size()) return add(y, x);
+    public static boolean cmp(List<Integer> x, List<Integer> y){
+        if(x.size() != y.size()) return x.size() > y.size();
+        for(int i = x.size() - 1; i >= 0; i--){
+            if(x.get(i) != y.get(i)) return x.get(i) > y.get(i);
+        }
+        return true;
+    }
+    public static Deque<Integer> sub(List<Integer> x, List<Integer> y){
         Deque<Integer> c =new ArrayDeque<>();
-        // t 记录进位
+        // t 记录借位
         int t = 0;
         for(int i = 0; i < x.size(); i++){
-            t += x.get(i);
-            if(i < y.size()) t += y.get(i);
-            c.push(t % 10);
-            t = t / 10;
+            t = x.get(i) - t;
+            if(i < y.size()) t = t - y.get(i);
+            c.push((t + 10) % 10);
+            // 如果 t 为负数，就借一位，否则不用借位
+            t = t < 0 ? 1 : 0;
         }
-        // 最后还有一个进位，别忽略
-        if(t > 0) c.push(t);
+        // 去除前导 0
+        while( c.size() > 1 && c.peek() == 0) c.pop();
         return c;
     }
 }
