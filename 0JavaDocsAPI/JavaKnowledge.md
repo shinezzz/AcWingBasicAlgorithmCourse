@@ -1,5 +1,13 @@
 # Java API Knowledge
 [toc]
+
+## BufferedReader 和 BufferedWriter
+```java
+BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+BufferedWriter out = new BufferedWriter(new OutputStreamWriter(System.out)); 
+in.readLine();
+out.write();
+```
 ## Java 声明、定义、赋值、初始化、变量、引用、创建的区别
 
 **变量**：由基本数据类型定义的变量称为普通变量，由类、数字、接口类型定义的变量称为引用型变量
