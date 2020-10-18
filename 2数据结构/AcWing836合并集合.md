@@ -67,7 +67,7 @@ public class Main{
         int n = Integer.parseInt(s[0]);
         int m = Integer.parseInt(s[1]);
         // 先初始化每个节点为自己的父节点
-        for(int i = 0; i < n; i++){
+        for(int i = 1; i <= n; i++){
             p[i] = i;
         }
         while(m-- > 0){
