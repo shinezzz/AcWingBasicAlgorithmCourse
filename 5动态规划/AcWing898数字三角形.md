@@ -80,6 +80,39 @@ class Main{
 }
 ```
 
+**优化为一阶 DP 数组**
+
+```java
+import java.util.*;
+
+class Main{
+    public static void main(String[] args){
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        int INF = 0x3f3f3f3f;
+        int[][] a = new int[n + 10][n + 10];
+        int[] dp = new int[n + 10];
+        for(int i = 1; i <= n; i++){
+            for(int j = 1; j <= i; j++)
+                a[i][j] = sc.nextInt();
+        }
+        // 初始化注意
+        Arrays.fill(dp, -INF);
+        dp[1] = a[1][1];
+        // 自顶向下
+        // 状态表示：集合：dp[i][j] 自顶向下到达 ij 的路径和；属性：最大值
+        // 状态计算：dp[i][j] = Math.max(dp[i - 1][j], dp[i - 1][j - 1]) + a[i][j];
+        for(int i = 2; i <= n; i++){
+            for(int j = i; j >= 1; j--)
+                dp[j] = Math.max(dp[j], dp[j - 1]) + a[i][j];
+        }
+        int res = -INF;
+        for(int k = 0; k <= n; k++) res = Math.max(res, dp[k]);
+        System.out.println(res);
+    }
+}
+```
+
 2. 自底向上动态规划
 
 ```java
@@ -106,6 +139,35 @@ class Main{
                 dp[i][j] = Math.max(dp[i + 1][j], dp[i + 1][j + 1]) + a[i][j];
         }
         System.out.println(dp[1][1]);
+    }
+}
+```
+
+优化为一维 DP 数组
+
+```java
+import java.util.*;
+
+class Main{
+    public static void main(String[] args){
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        int INF = 0x3f3f3f3f;
+        int[][] a = new int[n + 10][n + 10];
+        int[] dp = new int[n + 10];
+        // dp 数组初始化为 0
+        for(int i = 1; i <= n; i++){
+            for(int j = 1; j <= i; j++)
+                a[i][j] = sc.nextInt();
+        }
+        // 自底向上
+        // 状态表示：集合：dp[i][j] 自底向上到达 ij 的路径和；属性：最大值
+        // 状态计算：dp[i][j] = Math.max(dp[i + 1][j], dp[i + 1][j + 1]) + a[i][j];
+        for(int i = n; i >= 1; i--){
+            for(int j = 1; j <= i; j++)
+                dp[j] = Math.max(dp[j], dp[j + 1]) + a[i][j];
+        }
+        System.out.println(dp[1]);
     }
 }
 ```
