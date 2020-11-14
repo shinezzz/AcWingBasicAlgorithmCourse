@@ -43,6 +43,9 @@
 
 1. 排序 : `Arrays.sort(array)`;
 2. 数组转化为列表 : `Arrays.asList()`
+3. 复制数组 : `Arrays.copyOf(T[] original, int newLength)`
+4. 数组排序，指定范围 : `Arrays.sort(Object[] a, int fromIndex, int toIndex)`
+5. 将数组g的 (1,n) 的元素用Pair的第二个元素升序排序 : `Arrays.sort(T[] a, int fromIndex, int toIndex, Comparator<? super T> c)`；例子如`Arrays.sort(g, 1, n + 1, (Pair p1, Pair p2) -> p1.b - p2.b);`左闭右开区间
 
 ### Interface Collection<E>
 
