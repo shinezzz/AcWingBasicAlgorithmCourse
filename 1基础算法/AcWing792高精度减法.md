@@ -83,3 +83,57 @@ public class Main{
     }
 }
 ```
+
+数组代替 List 表示被减数和减数
+
+```java
+import java.util.*;
+
+class Main{
+    public static void main(String[] args){
+        Scanner sc = new Scanner(System.in);
+        String sa = sc.next();
+        String sb = sc.next();
+        int la = sa.length();
+        int lb = sb.length();
+        int[] a = new int[la];
+        int[] b = new int[lb];
+        for(int i = la - 1, j = 0; i >= 0; i--, j++)    a[j] = sa.charAt(i) - '0';
+        for(int i = lb - 1, j = 0; i >= 0; i--, j++)    b[j] = sb.charAt(i) - '0';
+        // 比较两个数，用大的数减去小的数
+        Deque<Integer> c = new ArrayDeque<>();
+        if(cmp(a, b)) c = sub(a, b);
+        else{
+            System.out.print("-");
+            c = sub(b, a);
+        }
+        while(!c.isEmpty()) System.out.print(c.pop());
+    }
+    public static boolean cmp(int[] a, int[] b){
+        if(a.length != b.length) return a.length > b.length;
+        else{
+            for(int i = a.length - 1; i >= 0; i--){
+                if(a[i] != b[i]) return a[i] > b[i];
+            }
+        }
+        return true;
+    }
+    public static Deque<Integer> sub(int[] a, int[] b){
+        Deque<Integer> c = new ArrayDeque<>();
+        // t 保存借位
+        int t = 0;
+        for(int i = 0; i < a.length; i++){
+            t = a[i] - t;
+            if(i < b.length) t -= b[i];
+            // 加10模10，很好的处理了负数的 t
+            c.push((t + 10) % 10);
+            if(t < 0) t = 1;
+            else t = 0;
+        }
+        // 相减可能有 0，去除前导 0
+        // 但是要保留最后一位 0
+        while(c.size() > 1 && c.peek() == 0) c.pop();
+        return c;
+    }
+}
+```
