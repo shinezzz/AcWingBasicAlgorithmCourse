@@ -28,7 +28,7 @@
 
 **数据范围**
 
-$1≤n≤m≤105,$
+$1≤n≤m≤10^5,$
 $−10^9≤ai,bi≤10^9$
 
 ```
@@ -70,6 +70,38 @@ class Main{
             j++;
         }
         if(i == n + 1) System.out.println("Yes");
+        else System.out.println("No");
+    }
+}
+```
+
+双指针，感觉这样写会看着舒服些
+
+```java
+import java.util.*;
+import java.io.*;
+
+class Main{
+    static final int N = 100010;
+    static int[] a = new int[N];
+    static int[] b = new int[N];
+    public static void main(String[] args) throws IOException{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String[] s = br.readLine().split(" ");
+        int n = Integer.parseInt(s[0]);
+        int m = Integer.parseInt(s[1]);
+        s = br.readLine().split(" ");
+        for(int i = 0; i < n; i++) a[i] = Integer.parseInt(s[i]);
+        s = br.readLine().split(" ");
+        for(int i = 0; i < m; i++) b[i] = Integer.parseInt(s[i]);
+        int i = 0, j = 0;
+        for(; i < n; i++, j++){
+            while(j < m && a[i] != b[j]) j++;
+            if(j == m){
+                break;
+            }
+        }
+        if(i == n) System.out.println("Yes");
         else System.out.println("No");
     }
 }
