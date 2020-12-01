@@ -91,3 +91,42 @@ public class Main{
     }
 }
 ```
+
+1. 根据左端点排序
+2. 更新右端点，取较大值`r = Math.max(a[i][1], r);`
+3. 不用 List，Pair，只用数组
+
+```java
+import java.util.*;
+import java.io.*;
+
+class Main{
+    static final int N = 100010;
+    static int[][] a = new int[N][2];
+    public static void main(String[] args) throws IOException{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String[] s = br.readLine().split(" ");
+        int n = Integer.parseInt(s[0]);
+        for(int i = 0; i < n; i++){
+            s = br.readLine().split(" ");
+            a[i][0] = Integer.parseInt(s[0]);
+            a[i][1] = Integer.parseInt(s[1]);
+        }
+        // 按照左端点排序
+        // 二维数组根据第一项升序，指定区间[0, n)
+        Arrays.sort(a, 0, n, (x1, x2) -> x1[0] - x2[0]);
+        // res 初始化为 1，之后每多一个区间就 +1
+        int res = 1;
+        int l = a[0][0], r = a[0][1];
+        for(int i = 1; i < n; i++){
+            // 上一个时刻的 r 小于当前的 l，说明不能合并
+            if(r < a[i][0]){
+                res++;
+            }
+            // 更新 r，选两者较大值
+            r = Math.max(a[i][1], r);
+        }
+        System.out.println(res);
+    }
+}
+```
