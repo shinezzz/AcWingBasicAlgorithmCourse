@@ -36,6 +36,17 @@
 
 ### Solution
 
+1. 求 n 的第 k 为数字： `n >> k & 1`
+2. 返回 x 的最后一位 1：lowbit(x)原理：`x & -x`;x & -x 其实就是 x & (~x + 1)`
+3. 补码为什么是 `~x + 1`
+```r
+x + (-x) = 0
+-x = 0 - x
+-x =  000...000 - x
+-x = 1000...000 - x
+-x = ~x + 1
+```
+
 ```java
 import java.util.*;
 import java.io.*;
