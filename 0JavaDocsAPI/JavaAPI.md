@@ -46,6 +46,23 @@
 3. 复制数组 : `Arrays.copyOf(T[] original, int newLength)`
 4. 数组排序，指定范围 : `Arrays.sort(Object[] a, int fromIndex, int toIndex)`
 5. 将数组g的 (1,n) 的元素用Pair的第二个元素升序排序 : `Arrays.sort(T[] a, int fromIndex, int toIndex, Comparator<? super T> c)`；例子如`Arrays.sort(g, 1, n + 1, (Pair p1, Pair p2) -> p1.b - p2.b);`左闭右开区间
+6. 二维数组先根据第一个元素排序，再根据第二个元素排序 ：
+   ```java
+    Arrays.sort(cbs, (o1, o2) -> {
+        if(o1[0] != o2[0]) return o1[0] - o2[0];
+        else if(o1[1] != o2[1]) return o1[1] - o2[1];
+        else return o1[2] - o2[2];
+    });
+    ```
+7. 数组排序，重写比较器的写法：
+    ```java
+    Arrays.sort(newEdges, new Comparator<int[]>(){
+        @Override
+        public int compare(int[] o1, int[] o2){
+            return o1[2] - o2[2];
+        }
+    });
+    ```
 
 ### Interface Collection<E>
 
@@ -93,7 +110,7 @@ Queue 队尾进元素，队首出元素
 
 3. Stack (LIFO) Comparison of Stack and Deque methods
 
-Stack 队首进元素，对首出元素。
+**Stack 队首进元素，队首出元素**。
 
 |Stack Method|Equivalent Deque Method|
 |---|---|
@@ -121,6 +138,16 @@ Stack 队首进元素，对首出元素。
 4. 返回map的值的集合 : `map.values()`; 可以用 LinkedList 的构造函数来转化为列表
 
 ### Regex.Class Pattern
+
+### Class PriorityQueue<E>
+
+
+> Implementation note: this implementation provides O(log(n)) time for the enqueuing and dequeuing methods (offer, poll, remove() and add); linear time for the remove(Object) and contains(Object) methods; and constant time for the retrieval methods (peek, element, and size). 
+
+
+1. PriorityQueue : Creates a PriorityQueue with the default initial capacity (11) that orders its elements according to their natural ordering. 自然顺序，默认小根堆。如果要构造大根堆要重写比较器`Queue<Integer> pq = new PriorityQueue<>((v1, v2) -> v2 - v1)`。
+2. 查看堆顶元素 : `pq.peek()`;
+3. 添加元素 : `pq.add()`;
 
 ### Class Stack
 
