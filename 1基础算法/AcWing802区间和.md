@@ -244,3 +244,9 @@ public class Main{
 }
 ```
 
+### yxc
+
+1. 离散化
+
+![image-20210217155111008](pics/image-20210217155111008.png)
+

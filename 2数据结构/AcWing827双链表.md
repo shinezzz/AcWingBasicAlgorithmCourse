@@ -43,7 +43,6 @@
 共一行，将整个链表从左到右输出。
 
 ```r
-
 数据范围
 
 1≤M≤100000
@@ -67,7 +66,6 @@ IR 2 2
 输出样例：
 
 8 7 7 3 2 9
-
 ```
 
 ### Solution
@@ -76,82 +74,68 @@ IR 2 2
 import java.util.*;
 import java.io.*;
 
-public class Main{
-    public static final int N = 100010;
-    public static int[] e = new int[N];
-    public static int[] l = new int[N];
-    public static int[] r = new int[N];
-    public static int idx;
-    // 规定双向链表的头的位置（最左侧）为0，尾的位置（最右侧）为 100005
-    // 插入的第 1 个结点只能从 1 开始
-
+class Main{
+    static final int N = 100010;
+    static int[] e = new int[N];
+    static int[] l = new int[N];
+    static int[] r = new int[N];
+    static int idx = 1;
+    static int R = 100005;
+    static int L = 0;
     public static void main(String[] args) throws IOException{
-        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-        int m = Integer.parseInt(in.readLine());
-        init();
-        int x, k;
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        String[] s = br.readLine().split(" ");
+        int m = Integer.parseInt(s[0]);
+        // 先把两个哨兵节点连上
+        l[R] = L;
+        r[L] = R;
         while(m > 0){
             m--;
-            String[] s = in.readLine().split(" ");  
-            switch(s[0]){
-                case "L" :
-                    // 在链表最左端插入数 x
-                    // 也就是在头结点的右边插入数 x
-                    x = Integer.parseInt(s[1]);
-                    add(0, x);
-                    break;
-                case "R" :
-                    // 在链表的最右端插入数 x
-                    // 也就是在尾结点的左边插入数 x
-                    x = Integer.parseInt(s[1]);
-                    add(l[100005], x);
-                    break;
-                case "D" :
-                    // 将第 k 个插入的数删除
-                    k = Integer.parseInt(s[1]);
-                    remove(k);
-                    break;
-                case "IL" :
-                    // 在第 k 个插入的数左侧插入一个数字
-                    k = Integer.parseInt(s[1]);
-                    x = Integer.parseInt(s[2]);
-                    add(l[k], x);
-                    break;
-                case "IR" :
-                    // 在第 k 个插入的数右侧插入一个数字
-                    k = Integer.parseInt(s[1]);
-                    x = Integer.parseInt(s[2]);
-                    add(k, x);
-                    break;
+            s = br.readLine().split(" ");
+            if(s[0].equals("L")){
+                int x = Integer.parseInt(s[1]);
+                // 链表的最左端等价在 0 的右端
+                add(0, x);
             }
-            // for(int i = r[0]; i != 100005; i = r[i]){
-            //     System.out.print(e[i] + " ");
-            // }
-            // System.out.println();
+            else if(s[0].equals("R")){
+                int x = Integer.parseInt(s[1]);
+                // 链表的最右端等价 l[R] 的右端
+                add(l[R], x);
+            }
+            else if(s[0].equals("D")){
+                int k = Integer.parseInt(s[1]);
+                delete(k);
+            }
+            else if(s[0].equals("IL")){
+                int k = Integer.parseInt(s[1]);
+                int x = Integer.parseInt(s[2]);
+                // k 的左侧等价于 l[k] 的右侧
+                add(l[k], x);
+            }
+            else if(s[0].equals("IR")){
+                int k = Integer.parseInt(s[1]);
+                int x = Integer.parseInt(s[2]);
+                // 就是在 k 的右侧
+                add(k, x);
+            }
         }
-        for(int i = r[0]; i != 100005; i = r[i]){
-            System.out.print(e[i] + " ");
-        }
-    }
-    public static void init(){
-        r[0] = 100005;
-        l[100005] = 0;
-        idx = 1;
+        // System.out.println(e[1]);
+        for(int i = r[L]; i != R; i = r[i]) bw.write(e[i] + " ");
+        bw.close();
     }
     public static void add(int k, int x){
         e[idx] = x;
         r[idx] = r[k];
-        l[idx] = k;
+        l[idx] = l[r[k]];
         l[r[k]] = idx;
         r[k] = idx;
         idx++;
-        
     }
-    public static void remove(int k){
-        // System.out.println("r[l[k]]: " + r[l[k]] + " l[r[k]]:" + l[r[k]]);
+    public static void delete(int k) {
         r[l[k]] = r[k];
         l[r[k]] = l[k];
-        // System.out.println("r[l[k]]: " + r[l[k]] + " l[r[k]]:" + l[r[k]]);
     }
+
 }
 ```

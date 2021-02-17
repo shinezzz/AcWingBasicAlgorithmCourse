@@ -67,29 +67,36 @@ NO
 import java.util.*;
 import java.io.*;
 
-public class Main{
-    public static final int N = 100010;
-    public static int[] stk = new int[N];
-    public static int tt = 0;
+class Main{
+    static final int N = 100010;
+    static int[] q = new int[N];
+    static int hh = 0;
     public static void main(String[] args) throws IOException{
-        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-        int m = Integer.parseInt(in.readLine());
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        String[] s = br.readLine().split(" ");
+        int m = Integer.parseInt(s[0]);
         while(m > 0){
             m--;
-            String[] s = in.readLine().split(" ");
+            s = br.readLine().split(" ");
             if(s[0].equals("push")){
                 int x = Integer.parseInt(s[1]);
-                stk[tt] = x;
-                tt++;
-            }else if(s[0].equals("pop")){
-                tt--;
-            }else if(s[0].equals("empty")){
-                String res = tt == 0 ? "YES" : "NO";
-                System.out.println(res);
-            }else if(s[0].equals("query")){
-                System.out.println(stk[tt - 1]);
+                q[hh++] = x;
+
+            }
+            else if(s[0].equals("pop")){
+                hh--;
+            }
+            else if(s[0].equals("empty")){
+                if(hh == 0) bw.write("YES" + "\n");
+                else bw.write("NO" + "\n");
+            }
+            else if(s[0].equals("query")){
+                bw.write(q[hh - 1] + "\n");
             }
         }
+        bw.close();
+        br.close();
     }
 }
 ```

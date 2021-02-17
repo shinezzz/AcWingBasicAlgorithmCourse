@@ -65,33 +65,36 @@ YES
 import java.util.*;
 import java.io.*;
 
-public class Main{
-    public static final int N = 100010;
-    public static int[] q = new int[N];
-    public static int idx = 0;
-    // hh 表示队头
-    // tt 表示队尾
-    // 队列队尾插入数据,队首弹出数据
-    // hh 和 tt 的初始化要注意是 0 还是 -1,不同的初始化在 push 操作是不一样的,自己画图推导一下
-    public static int hh = 0, tt = 0;
+class Main{
+    static final int N = 100010;
+    static int[] queue = new int[N];
+    static int hh = 0, tt = 0;
     public static void main(String[] args) throws IOException{
-        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-        int m = Integer.parseInt(in.readLine());
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        String[] s = br.readLine().split(" ");
+        int m = Integer.parseInt(s[0]);
         while(m > 0){
             m--;
-            String[] s = in.readLine().split(" ");
+            s = br.readLine().split(" ");
             if(s[0].equals("push")){
-                q[tt] = Integer.parseInt(s[1]);
+                int x = Integer.parseInt(s[1]);
+                queue[tt] = x;
                 tt++;
-            }else if(s[0].equals("pop")){
+            }
+            else if(s[0].equals("pop")){
                 hh++;
-            }else if(s[0].equals("empty")){
-                String res = hh < tt ? "NO" : "YES";
-                System.out.println(res);
-            }else if(s[0].equals("query")){
-                System.out.println(q[hh]);
+            }
+            else if(s[0].equals("empty")){
+                if(hh >= tt) bw.write("YES\n");
+                else bw.write("NO\n");
+            }
+            else if(s[0].equals("query")){
+                bw.write(queue[hh] + "\n");
             }
         }
+        bw.close();
+        br.close();
     }
 }
 ```

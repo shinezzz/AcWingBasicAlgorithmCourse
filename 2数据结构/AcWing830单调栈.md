@@ -41,22 +41,29 @@
 import java.util.*;
 import java.io.*;
 
-public class Main{
+class Main{
+    static final int N = 100010;
+    static int[] a = new int[N];
+    static int[] stk = new int[N];
+    static int hh = 0;
     public static void main(String[] args) throws IOException{
-        int N = 100010;
-        int[] stk = new int[N];
-        int tt = 0;
-        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-        int n = Integer.parseInt(in.readLine());
-        String[] s = in.readLine().split(" ");
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        String[] s = br.readLine().split(" ");
+        int n = Integer.parseInt(s[0]);
+        s = br.readLine().split(" ");
+        for(int i = 0; i < n; i ++) a[i] = Integer.parseInt(s[i]);
+        // 输出每个数左边第一个比它小的数
+        // 单调递增的栈
         for(int i = 0; i < n; i++){
-            int x = Integer.parseInt(s[i]);
-            while(tt > 0 && stk[tt] >= x) tt--;
-            if(tt > 0) System.out.print(stk[tt] + " ");
-            else System.out.print(-1 + " ");
-            tt++;
-            stk[tt] = x;
+            while(hh > 0 && a[stk[hh]] >= a[i]) hh--;
+            if(hh == 0) bw.write("-1 ");
+            else bw.write(a[stk[hh]] + " ");
+            hh++;
+            stk[hh] = i;
         }
+        bw.close();
+        br.close();
     }
 }
 ```

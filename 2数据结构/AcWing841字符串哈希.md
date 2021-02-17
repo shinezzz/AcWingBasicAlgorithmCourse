@@ -95,3 +95,57 @@ public class Main{
     }
 }
 ```
+
+### yxc
+
+![image-20210217192838725](pics/image-20210217192838725.png)
+
+```cpp
+#include <iostream>
+#include <algorithm>
+
+using namespace std;
+
+typedef unsigned long long ULL;
+
+const int N = 100010, P = 131;
+
+int n, m;
+char str[N];
+ULL h[N], p[N];
+
+ULL get(int l, int r)
+{
+    return h[r] - h[l - 1] * p[r - l + 1];
+}
+
+int main()
+{
+    scanf("%d%d", &n, &m);
+    scanf("%s", str + 1);
+
+    p[0] = 1;
+    for (int i = 1; i <= n; i ++ )
+    {
+        h[i] = h[i - 1] * P + str[i];
+        p[i] = p[i - 1] * P;
+    }
+
+    while (m -- )
+    {
+        int l1, r1, l2, r2;
+        scanf("%d%d%d%d", &l1, &r1, &l2, &r2);
+
+        if (get(l1, r1) == get(l2, r2)) puts("Yes");
+        else puts("No");
+    }
+
+    return 0;
+}
+
+// 作者：yxc
+// 链接：https://www.acwing.com/activity/content/code/content/45313/
+// 来源：AcWing
+// 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+```
+

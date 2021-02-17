@@ -62,7 +62,9 @@ public class Main{
             int x = Integer.parseInt(s[i]);
             int res = 0;
             while(x > 0) {
-                x = x - (x & -x);
+                // lowbit 操作
+                // x = x - (x & -x);
+                t &= (t - 1);
                 res++;
             }
             out.write(res + " ");
@@ -73,3 +75,13 @@ public class Main{
     }
 }
 ```
+
+### yxc
+
+1. lowbit操作
+
+![image-20210217153826737](pics/image-20210217153826737.png)
+
+2. 原码反码补码
+
+![image-20210217154038552](pics/image-20210217154038552.png)
