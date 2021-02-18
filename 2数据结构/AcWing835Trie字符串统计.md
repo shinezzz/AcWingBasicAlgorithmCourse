@@ -84,7 +84,7 @@ import java.util.*;
 import java.io.*;
 
 public class Main{
-    public static int N = 10010;
+    public static int N = 100010;
     // 记录当前是第几个结点
     public static int idx = 0;
     // 记录以当前结点为结尾的个数

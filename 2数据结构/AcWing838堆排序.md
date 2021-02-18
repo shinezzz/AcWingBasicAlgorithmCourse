@@ -87,3 +87,56 @@ public class Main{
 下标从 1 开始比较好，从 0 开始的画， `2 * 0` 还是 0
 
 ![image-20210217161426667](pics/image-20210217161426667.png)
+
+从 `1 ~ n/2`开始建堆，时间复杂度为 `O(n)`，证明如下
+
+![image-20210218150532815](pics/image-20210218150532815.png)
+
+
+
+
+
+```cpp
+// h[N]存储堆中的值, h[1]是堆顶，x的左儿子是2x, 右儿子是2x + 1
+// ph[k]存储第k个插入的点在堆中的位置
+// hp[k]存储堆中下标是k的点是第几个插入的
+int h[N], ph[N], hp[N], size;
+
+// 交换两个点，及其映射关系
+void heap_swap(int a, int b)
+{
+    swap(ph[hp[a]],ph[hp[b]]);
+    swap(hp[a], hp[b]);
+    swap(h[a], h[b]);
+}
+
+void down(int u)
+{
+    int t = u;
+    if (u * 2 <= size && h[u * 2] < h[t]) t = u * 2;
+    if (u * 2 + 1 <= size && h[u * 2 + 1] < h[t]) t = u * 2 + 1;
+    if (u != t)
+    {
+        heap_swap(u, t);
+        down(t);
+    }
+}
+
+void up(int u)
+{
+    while (u / 2 && h[u] < h[u / 2])
+    {
+        heap_swap(u, u / 2);
+        u >>= 1;
+    }
+}
+
+// O(n)建堆
+for (int i = n / 2; i; i -- ) down(i);
+
+作者：yxc
+链接：https://www.acwing.com/blog/content/404/
+来源：AcWing
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+```
+
