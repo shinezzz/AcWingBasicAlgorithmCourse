@@ -1047,6 +1047,62 @@ public class Main{
 }
 ```
 
+3. 表达式求值
+
+```java
+import java.util.*;
+
+class Main{
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        String s = sc.nextLine();
+        int n = s.length();
+        Deque<Integer> num = new LinkedList<>();
+        Deque<Character> op = new LinkedList<>();
+        Map<Character, Integer> pr = new HashMap<>();
+        pr.put('+', 1);
+        pr.put('-', 1);
+        pr.put('*', 2);
+        pr.put('/', 2);
+        for(int i = 0; i < n; i++) {
+            char c = s.charAt(i);
+            if(c == ' ') continue;
+            else if(Character.isDigit(c)) {
+                int j = i, x = 0;
+                while(j < n && Character.isDigit(s.charAt(j))) {
+                    x = x * 10 + (s.charAt(j) - '0');
+                    j++;
+                }
+                num.push(x);
+                i = j - 1;
+            }
+            else if(c == '(') op.push(c);
+            else if(c == ')') {
+                while(op.peek() != '(') cal(num, op);
+                op.pop();
+            }
+            else {
+                while(!op.isEmpty() && op.peek() != '(' && pr.get(op.peek()) >= pr.get(c)) cal(num, op);
+                op.push(c);
+            }
+        }
+        while(!op.isEmpty()) cal(num, op);
+        System.out.println(num.pop());
+    }
+    public static void cal(Deque<Integer> num, Deque<Character> op) {
+        int b = num.pop();
+        int a = num.pop();
+        char c = op.pop();
+        int x = 0;
+        if (c == '+') x = a + b;
+        else if (c == '-') x = a - b;
+        else if (c == '*') x = a * b;
+        else x = a / b;
+        num.push(x);
+    }
+}
+```
+
 ### 队列 —— 模板题 AcWing 829. 模拟队列
 
 1. 数组模拟普通队列
